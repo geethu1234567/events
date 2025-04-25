@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Local Event Finder</title>
+  
+  <style>
+
+  /* Basic Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Body Styling */
+  body {
+  font-family: 'Arial', sans-serif;
+  background: url('https://img.freepik.com/free-vector/realistic-dynamic-fog-background_23-2149111508.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+
+  /* Container Styling */
+  .container {
+    width: 100%;
+    max-width: 900px;
+    background: linear-gradient(to top left, #f06, #ffcc00);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  /* Filter Section */
+  .filters {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+
+  select,
+  input[type="date"] {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  select:focus,
+  input[type="date"]:focus {
+    border-color: #ffcc00;
+    box-shadow: 0 0 5px rgba(255, 204, 0, 0.6);
+    outline: none;
+  }
+
+  /* Event List Styling */
+  .event {
+    background: #fff;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .event:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .event h3 {
+    font-size: 1.8rem;
+    color: #2980b9;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+
+  .event p {
+    font-size: 1rem;
+    color: #555;
+    margin: 8px 0;
+  }
+
+  .event p strong {
+    color: #333;
+  }
+
+  .event a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .event a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+    }
+
+    select,
+    input[type="date"] {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Local Event Finder</h1>
+    
+    <div class="filters">
+      <select id="categoryFilter">
+        <option value="all">All Categories</option>
+        <option value="music">Music</option>
+        <option value="art">Art</option>
+        <option value="sports">Sports</option>
+        <option value="tech">Technical</option>
+      </select>
+
+      <input type="date" id="dateFilter" />
+    </div>
+
+    <div id="eventList" class="event-list"></div>
+  </div>
+ 
+
+
+  <script src="script.js"></script>
+  <script>
+    const events = [
+  // 🎵 MUSIC EVENTS
+  { title: "Jazz Night", category: "music", date: "2025-04-27", time: "7 PM", venue: "City Hall", location: "Downtown", description: "Live jazz from top local bands." },
+  { title: "Rock Festival", category: "music", date: "2025-04-29", time: "5 PM", venue: "River Arena", location: "Riverside", description: "Biggest rock night of the season!" },
+  { title: "Classical Strings", category: "music", date: "2025-05-01", time: "6 PM", venue: "Symphony Hall", location: "Lakeview", description: "Experience a night of classical violin." },
+  { title: "Hip-Hop Block Party", category: "music", date: "2025-05-02", time: "8 PM", venue: "Open Street Stage", location: "Westside", description: "Block party with hip-hop DJs." },
+  { title: "Indie Band Fest", category: "music", date: "2025-05-03", time: "4 PM", venue: "University Lawn", location: "Campus Circle", description: "Catch the freshest indie bands." },
+
+  // 🎨 ART EVENTS
+  { title: "Art Expo", category: "art", date: "2025-04-28", time: "10 AM", venue: "Art Gallery", location: "Maple Street", description: "Discover local artworks and meet the artists." },
+  { title: "Street Art Tour", category: "art", date: "2025-04-30", time: "3 PM", venue: "Old Town", location: "Central Lane", description: "Walking tour of mural art & graffiti." },
+  { title: "Sketch & Sip", category: "art", date: "2025-05-01", time: "6 PM", venue: "Art Cafe", location: "High Street", description: "Drink and draw with friends!" },
+  { title: "Digital Art Showcase", category: "art", date: "2025-05-02", time: "11 AM", venue: "Tech Arts Hall", location: "Innovation Block", description: "Explore digital artworks and NFTs." },
+  { title: "Pottery Workshop", category: "art", date: "2025-05-03", time: "2 PM", venue: "Clay Studio", location: "Riverbank", description: "Hands-on pottery experience." },
+
+  // 🏃 SPORTS EVENTS
+  { title: "Community Football Match", category: "sports", date: "2025-04-26", time: "4 PM", venue: "Sports Complex", location: "East Ground", description: "Friendly match - all are welcome!" },
+  { title: "Marathon 5K", category: "sports", date: "2025-04-26", time: "6 AM", venue: "Central Park", location: "City Center", description: "Join the annual run for charity." },
+  { title: "Cricket Tournament", category: "sports", date: "2025-05-01", time: "9 AM", venue: "Stadium Field", location: "West Pavilion", description: "Knockout format with local teams." },
+  { title: "Basketball Showdown", category: "sports", date: "2025-05-02", time: "5 PM", venue: "Community Court", location: "North Block", description: "Streetball-style tournament." },
+  { title: "Yoga in the Park", category: "sports", date: "2025-05-03", time: "7 AM", venue: "Zen Park", location: "Meadow Hills", description: "Start your day with outdoor yoga." },
+
+  // 💻 TECHNICAL EVENTS
+  { title: "AI & ML Bootcamp", category: "tech", date: "2025-04-25", time: "9 AM", venue: "Tech Hub", location: "Silicon Plaza", description: "Deep dive into Artificial Intelligence." },
+  { title: "Cybersecurity Talk", category: "tech", date: "2025-04-28", time: "2 PM", venue: "Innovation Center", location: "Block 5", description: "Learn how to protect your data online." },
+  { title: "Hackathon Sprint", category: "tech", date: "2025-05-01", time: "10 AM", venue: "Startup Garage", location: "Warehouse District", description: "24-hour coding marathon." },
+  { title: "Web Dev Meetup", category: "tech", date: "2025-05-02", time: "6 PM", venue: "Code Cafe", location: "Midtown", description: "Share projects, ideas, and food!" },
+  { title: "Cloud Computing Workshop", category: "tech", date: "2025-05-03", time: "1 PM", venue: "IT Park Lab", location: "Sector 9", description: "Get hands-on with AWS and Azure." }
+];
+
+
+const eventList = document.getElementById('eventList');
+const categoryFilter = document.getElementById('categoryFilter');
+const dateFilter = document.getElementById('dateFilter');
+
+function displayEvents(filteredEvents) {
+  eventList.innerHTML = '';
+  if (filteredEvents.length === 0) {
+    eventList.innerHTML = '<p>No events found for this filter.</p>';
+    return;
+  }
+
+  filteredEvents.forEach(event => {
+    const div = document.createElement('div');
+    div.className = 'event';
+    div.innerHTML = `
+      <h3>${event.title}</h3>
+      <p><strong>Category:</strong> ${event.category.toUpperCase()}</p>
+      <p><strong>Date:</strong> ${event.date} | <strong>Time:</strong> ${event.time}</p>
+      <p><strong>Venue:</strong> ${event.venue} | <strong>Location:</strong> ${event.location}</p>
+      <p>${event.description}</p>
+    `;
+    eventList.appendChild(div);
+  });
+}
+
+function filterEvents() {
+  const selectedCategory = categoryFilter.value;
+  const selectedDate = dateFilter.value;
+
+  const filtered = events.filter(event => {
+    const categoryMatch = selectedCategory === 'all' || event.category === selectedCategory;
+    const dateMatch = !selectedDate || event.date === selectedDate;
+    return categoryMatch && dateMatch;
+  });
+
+  displayEvents(filtered);
+}
+
+// Initial display
+displayEvents(events);
+
+// Add event listeners
+categoryFilter.addEventListener('change', filterEvents);
+dateFilter.addEventListener('change', filterEvents);
+
+function displayEvents(filteredEvents) {
+  eventList.innerHTML = '';
+  if (filteredEvents.length === 0) {
+    eventList.innerHTML = '<p>No events found for this filter.</p>';
+    return;
+  }
+
+  filteredEvents.forEach(event => {
+    const div = document.createElement('div');
+    div.className = 'event';
+    div.innerHTML = `
+      <h3><a href="event-details.html?title=${encodeURIComponent(event.title)}">${event.title}</a></h3>
+      <p><strong>Category:</strong> ${event.category.toUpperCase()}</p>
+      <p><strong>Date:</strong> ${event.date} | <strong>Time:</strong> ${event.time}</p>
+      <p><strong>Venue:</strong> ${event.venue} | <strong>Location:</strong> ${event.location}</p>
+      <p>${event.description}</p>
+    `;
+    eventList.appendChild(div);
+  });
+}
+
+
+
+
+  </script>
+</body>
+</html>

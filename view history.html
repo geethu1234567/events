@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Management System</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            padding: 20px;
+            background-image: url('ticket.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+        }
+
+        .background-img {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .ticket-section {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], input[type="submit"], select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #ticket-history {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        #view-history-btn{
+            background-color:rgb(24, 24, 92);
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #receipt {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            width: 300px;
+        }
+
+        #history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #history-table th, #history-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #history-table th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+
+        #history-table td {
+            text-align: center;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="background-img">
+    <div class="ticket-section">
+        <form id="ticket-form">
+            <h2>Ticket Management System</h2>
+            <input type="text" id="name" placeholder="Name" required><br>
+            <input type="text" id="seat" placeholder="Seat No" required><br>
+            <input type="date" id="date" required><br>
+            <input type="text" id="from" placeholder="Your Location" required><br>
+            <input type="text" id="to" placeholder="Event Location" required><br>
+
+            <!-- Ticket Type Dropdown -->
+            <select id="ticket-type" required>
+                <option value="">Select Ticket Type</option>
+                <option value="vip">VIP - $100</option>
+                <option value="general">General - $50</option>
+            </select><br>
+
+            <!-- Quantity Input -->
+            <input type="number" id="quantity" placeholder="Quantity" min="1" required><br>
+
+            <!-- Price Display -->
+            <input type="text" id="total-price" placeholder="Total Price" readonly><br>
+
+            <input type="submit" value="Book Ticket">
+        </form>
+        <button id="view-history-btn">View History</button>
+    </div>
+</div>
+
+<div id="ticket-history" style="display: none;">
+    <h3>Ticket History</h3>
+    <table id="history-table">
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Name</th>
+                <th>Seat No</th>
+                <th>Date</th>
+                <th>Your Location</th>
+                <th>Event Location</th>
+                <th>Ticket Type</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="history-table-body">
+            <!-- Ticket history rows will be dynamically added here -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Receipt Section -->
+<div id="receipt">
+    <h3>Receipt</h3>
+    <p><strong>Ticket ID:</strong> <span id="receipt-id"></span></p>
+    <p><strong>Name:</strong> <span id="receipt-name"></span></p>
+    <p><strong>Seat No:</strong> <span id="receipt-seat"></span></p>
+    <p><strong>Date:</strong> <span id="receipt-date"></span></p>
+    <p><strong>Your Location:</strong> <span id="receipt-from"></span></p>
+    <p><strong>Event Location:</strong> <span id="receipt-to"></span></p>
+    <p><strong>Ticket Type:</strong> <span id="receipt-ticket-type"></span></p>
+    <p><strong>Quantity:</strong> <span id="receipt-quantity"></span></p>
+    <p><strong>Total Price:</strong> <span id="receipt-total-price"></span></p>
+</div>
+
+<script>
+    // Event listener for form submission
+    document.getElementById("ticket-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Gather user input
+        var name = document.getElementById("name").value;
+        var seat = document.getElementById("seat").value;
+        var date = document.getElementById("date").value;
+        var from = document.getElementById("from").value;
+        var to = document.getElementById("to").value;
+        var ticketType = document.getElementById("ticket-type").value;
+        var quantity = document.getElementById("quantity").value;
+
+        // Prices for tickets
+        var ticketPrices = {
+            vip: 100,
+            general: 50
+        };
+
+        // Calculate total price
+        var pricePerTicket = ticketPrices[ticketType];
+        var totalPrice = pricePerTicket * quantity;
+
+        // Generate ticket ID (simple demonstration)
+        var ticketId = "T" + Math.floor(Math.random() * 10000);
+
+        // Add ticket details to history table
+        var tableBody = document.getElementById("history-table-body");
+        var newRow = tableBody.insertRow();
+        newRow.innerHTML = `
+            <td>${ticketId}</td>
+            <td>${name}</td>
+            <td>${seat}</td>
+            <td>${date}</td>
+            <td>${from}</td>
+            <td>${to}</td>
+            <td>${ticketType.charAt(0).toUpperCase() + ticketType.slice(1)}</td>
+            <td>${quantity}</td>
+            <td>$${totalPrice}</td>
+            <td><button class='delete-btn' data-ticket-id='${ticketId}'>Delete</button></td>
+        `;
+
+        // Show success message
+        alert("Ticket with ID " + ticketId + " has been booked successfully.");
+
+        // Show receipt
+        document.getElementById("receipt-id").textContent = ticketId;
+        document.getElementById("receipt-name").textContent = name;
+        document.getElementById("receipt-seat").textContent = seat;
+        document.getElementById("receipt-date").textContent = date;
+        document.getElementById("receipt-from").textContent = from;
+        document.getElementById("receipt-to").textContent = to;
+        document.getElementById("receipt-ticket-type").textContent = ticketType.charAt(0).toUpperCase() + ticketType.slice(1);
+        document.getElementById("receipt-quantity").textContent = quantity;
+        document.getElementById("receipt-total-price").textContent = "$" + totalPrice;
+
+        document.getElementById("receipt").style.display = "block"; // Display receipt
+
+        // Reset form
+        document.getElementById("ticket-form").reset();
+        document.getElementById("total-price").value = '';  // Clear total price
+    });
+
+    // Show ticket history when clicking "View History"
+    document.getElementById("view-history-btn").addEventListener("click", function() {
+        document.getElementById("ticket-history").style.display = "block";
+    });
+
+    // Handle ticket deletion
+    document.getElementById("ticket-history").addEventListener("click", function(event) {
+        if (event.target.classList.contains('delete-btn')) {
+            var ticketIdToDelete = event.target.getAttribute('data-ticket-id');
+            // Delete ticket logic (for demonstration, we'll remove the row from table)
+            event.target.closest('tr').remove();
+            alert("Ticket with ID " + ticketIdToDelete + " has been deleted.");
+        }
+    });
+
+    // Update total price when ticket type or quantity changes
+    document.getElementById("ticket-type").addEventListener("change", updateTotalPrice);
+    document.getElementById("quantity").addEventListener("input", updateTotalPrice);
+
+    function updateTotalPrice() {
+        var ticketType = document.getElementById("ticket-type").value;
+        var quantity = document.getElementById("quantity").value;
+
+        if (ticketType && quantity) {
+            var ticketPrices = {
+                vip: 100,
+                general: 50
+            };
+            var pricePerTicket = ticketPrices[ticketType];
+            var totalPrice = pricePerTicket * quantity;
+
+            // Update total price input field
+            document.getElementById("total-price").value = "$" + totalPrice;
+        }
+    }
+</script>
+
+</body>
+</html>

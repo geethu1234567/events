@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home | Event Ticket Booking</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://img.freepik.com/free-vector/realistic-dynamic-fog-background_23-2149111508.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    backdrop-filter: brightness(0.9);
+}
+
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .event-listing {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .event-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            border-radius: 8px;
+        }
+
+        .event-card:hover {
+            transform: scale(1.05);
+        }
+
+        .event-card img {
+            width: 100%;
+            height: 200px;
+            border-radius: 5px;
+        }
+
+        .event-card h3 {
+            font-size: 1.6rem;
+            margin-top: 15px;
+        }
+
+        .event-card p {
+            font-size: 1.1rem;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .view-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .view-button:hover {
+            background-color: #0056b3;
+        }
+
+        .event-details {
+            display: none;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .book-now-button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .book-now-button:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>"Explore! Experience! Enjoy! Local events curated for you!"</h1>
+        <p>Book tickets for exciting events happening around you!</p>
+    </header>
+
+    <div class="container">
+        <section class="event-listing">
+            <!-- Music Concert -->
+            <div class="event-card">
+                <img src="https://static.pexels.com/photos/167636/pexels-photo-167636.jpeg" alt="Music Concert">
+                <h3>Music Concert</h3>
+                <p>Join us for an exciting music concert featuring top artists. Date: Feb 15, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('music')">View Details</a>
+
+                <div id="music" class="event-details">
+                    <p><strong>Date:</strong> Feb 15, 2025</p>
+                    <p><strong>Time:</strong> 7:00 PM</p>
+                    <p><strong>Venue:</strong> Madison Square Garden</p>
+                    <p><strong>Location:</strong> New York, USA</p>
+                    <p><strong>Price:</strong> $50</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+
+            <!-- Comedy Show -->
+            <div class="event-card">
+                <img src="https://discovermohican.com/wp-content/uploads/2019/06/Landolls-Comedy-Show.jpg" alt="Comedy Show">
+                <h3>Comedy Show</h3>
+                <p>Get ready for a night of laughter at the best comedy show in town. Date: March 10, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('comedy')">View Details</a>
+
+                <div id="comedy" class="event-details">
+                    <p><strong>Date:</strong> March 10, 2025</p>
+                    <p><strong>Time:</strong> 8:00 PM</p>
+                    <p><strong>Venue:</strong> Comedy Club</p>
+                    <p><strong>Location:</strong> Los Angeles, USA</p>
+                    <p><strong>Price:</strong> $30</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+
+            <!-- Theater Play -->
+            <div class="event-card">
+                <img src="https://tampamagazines.com/wp-content/uploads/2019/02/TampaTheatreHeader-1024x512.jpg" alt="Theater Play">
+                <h3>Theater Play</h3>
+                <p>Experience the magic of live theater with a thrilling performance. Date: April 20, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('theater')">View Details</a>
+
+                <div id="theater" class="event-details">
+                    <p><strong>Date:</strong> April 20, 2025</p>
+                    <p><strong>Time:</strong> 6:00 PM</p>
+                    <p><strong>Venue:</strong> National Theater</p>
+                    <p><strong>Location:</strong> London, UK</p>
+                    <p><strong>Price:</strong> $75</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+
+            <!-- Art Exhibition -->
+            <div class="event-card">
+                <img src="https://canadianart.ca/wp-content/uploads/2014/10/Art-Toronto-View.jpg" alt="Art Exhibition">
+                <h3>Art Exhibition</h3>
+                <p>Explore beautiful art pieces at this exclusive exhibition. Date: May 5, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('art')">View Details</a>
+
+                <div id="art" class="event-details">
+                    <p><strong>Date:</strong> May 5, 2025</p>
+                    <p><strong>Time:</strong> 10:00 AM</p>
+                    <p><strong>Venue:</strong> Art Gallery</p>
+                    <p><strong>Location:</strong> Paris, France</p>
+                    <p><strong>Price:</strong> $20</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+
+            <!-- Sports Event -->
+            <div class="event-card">
+                <img src="https://img.freepik.com/premium-photo/multi-sport-collage-football-boxing-soccer-voleyball-ice-hockey-black-background_972290-10179.jpg" alt="Sports Event">
+                <h3>Sports Event</h3>
+                <p>Get ready for an adrenaline-pumping sports event. Date: June 1, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('sports')">View Details</a>
+
+                <div id="sports" class="event-details">
+                    <p><strong>Date:</strong> June 1, 2025</p>
+                    <p><strong>Time:</strong> 5:00 PM</p>
+                    <p><strong>Venue:</strong> Olympic Stadium</p>
+                    <p><strong>Location:</strong> Tokyo, Japan</p>
+                    <p><strong>Price:</strong> $100</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+
+            <!-- Food Festival -->
+            <div class="event-card">
+                <img src="https://images.lifestyleasia.com/wp-content/uploads/sites/6/2022/08/12201040/67251059_1657139211083133_7151496151319969792_n-1349x900.jpeg" alt="Food Festival">
+                <h3>Food Festival</h3>
+                <p>Indulge in the best local delicacies at this exciting food festival. Date: July 12, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('food')">View Details</a>
+
+                <div id="food" class="event-details">
+                    <p><strong>Date:</strong> July 12, 2025</p>
+                    <p><strong>Time:</strong> 11:00 AM</p>
+                    <p><strong>Venue:</strong> City Park</p>
+                    <p><strong>Location:</strong> San Francisco, USA</p>
+                    <p><strong>Price:</strong> $40</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+
+            <!-- Dance Performance -->
+            <div class="event-card">
+                <img src="https://htoindia.com/wp-content/uploads/2018/01/Indian-folk-and-tribal-dances-1-1024x393.jpg" alt="Dance Performance">
+                <h3>Dance Performance</h3>
+                <p>Be mesmerized by a captivating dance performance. Date: August 18, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('dance')">View Details</a>
+
+                <div id="dance" class="event-details">
+                    <p><strong>Date:</strong> August 18, 2025</p>
+                    <p><strong>Time:</strong> 7:30 PM</p>
+                    <p><strong>Venue:</strong> Dance Theater</p>
+                    <p><strong>Location:</strong> Chicago, USA</p>
+                    <p><strong>Price:</strong> $60</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+
+
+            <!-- Film Screening -->
+            <div class="event-card">
+                <img src="https://www.visitphilly.com/wp-content/uploads/2021/06/Movies_Night_at_Clark_Park_PhotobyBenTran-courtesy-UCD_2200vp-1400x787.jpg" alt="Film Screening">
+                <h3>Film Screening</h3>
+                <p>Enjoy an exclusive screening of a critically acclaimed film. Date: October 20, 2025</p>
+                <a href="javascript:void(0)" class="view-button" onclick="showEventDetails('film')">View Details</a>
+
+                <div id="film" class="event-details">
+                    <p><strong>Date:</strong> October 20, 2025</p>
+                    <p><strong>Time:</strong> 9:00 PM</p>
+                    <p><strong>Venue:</strong> Cinema Hall</p>
+                    <p><strong>Location:</strong> Berlin, Germany</p>
+                    <p><strong>Price:</strong> $15</p>
+                    <a href="javascript:void(0)" class="book-now-button" onclick="redirectToPaymentPage()">Book Now</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Event Ticket Booking</p>
+    </footer>
+
+    <script>
+        function showEventDetails(event) {
+            const details = document.querySelectorAll('.event-details');
+            details.forEach(detail => detail.style.display = 'none');
+            document.getElementById(event).style.display = 'block';
+        }
+        function redirectToPaymentPage() {
+        window.location.href = 'payment.html';  // Link to your payment page
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Ticket Booking Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-image: url('https://thumbs.dreamstime.com/b/contact-icon-abstract-light-cyan-blue-hexagon-pattern-background-contact-icon-isolated-abstract-light-cyan-blue-hexagon-pattern-background-205182818.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .checkout-container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .checkout-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .ticket-selection, .ticket-quantity, .customer-details {
+            margin-bottom: 20px;
+        }
+
+        .payment-success {
+            display: none;
+            background-color: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .payment-receipt {
+            display: none;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .logout-button {
+    display: none; /* Initially hidden */
+    text-align: center;
+    background-color: #dc3545; /* Red color for logout */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 20px auto;
+    display: block;
+    width: fit-content;
+    transition: background 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="checkout-container">
+    <h1>Event Ticket Checkout</h1>
+    <form id="checkoutForm">
+        <div class="ticket-selection">
+            <label for="ticketType">Select Ticket Type:</label>
+            <select id="ticketType">
+                <option value="general">General Ticket - $50</option>
+                <option value="vip">VIP Ticket - $100</option>
+            </select>
+        </div>
+
+        <div class="ticket-quantity">
+            <label for="ticketQuantity">Select Quantity:</label>
+            <input type="number" id="ticketQuantity" name="ticketQuantity" min="1" value="1" />
+        </div>
+
+        <div class="customer-details">
+            <h3>Customer Details</h3>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required />
+        </div>
+
+        <div class="checkout-summary">
+            <h3>Summary</h3>
+            <p id="ticketSummary">Ticket: General - $50</p>
+            <p id="totalAmount">Total: $50</p>
+        </div>
+
+        <button type="submit" id="checkoutBtn">Proceed to Payment</button>
+    </form>
+
+    <!-- Payment Success Message -->
+    <div class="payment-success" id="paymentSuccessMessage">
+        Payment Paid Successfully!
+    </div>
+
+    <!-- Payment Receipt -->
+    <div class="payment-receipt" id="paymentReceipt">
+        <h3>Payment Receipt</h3>
+        <p id="receiptDetails"></p>
+    </div>
+    <a href="logout1.html" id="logoutButton" class="logout-button" style="display: none;" onclick="logout()">Logout</a>
+</div>
+
+
+
+<script>
+    document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Get values from the form
+    const ticketType = document.getElementById('ticketType').value;
+    const ticketQuantity = document.getElementById('ticketQuantity').value;
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+
+    // Prices for tickets
+    const ticketPrices = {
+        general: 50,
+        vip: 100
+    };
+
+    // Calculate total amount
+    const pricePerTicket = ticketPrices[ticketType];
+    const totalAmount = pricePerTicket * ticketQuantity;
+
+    // Update the summary
+    document.getElementById('ticketSummary').textContent = `Ticket: ${ticketType.charAt(0).toUpperCase() + ticketType.slice(1)} - $${pricePerTicket}`;
+    document.getElementById('totalAmount').textContent = `Total: $${totalAmount}`;
+
+    // Show payment success message and receipt
+    document.getElementById('paymentSuccessMessage').style.display = 'block';
+    document.getElementById('paymentReceipt').style.display = 'block';
+
+    // Display receipt details
+    document.getElementById('receiptDetails').innerHTML = `
+        <strong>Name:</strong> ${name}<br>
+        <strong>Email:</strong> ${email}<br>
+        <strong>Phone:</strong> ${phone}<br>
+        <strong>Ticket Type:</strong> ${ticketType.charAt(0).toUpperCase() + ticketType.slice(1)}<br>
+        <strong>Quantity:</strong> ${ticketQuantity}<br>
+        <strong>Total Amount:</strong> $${totalAmount}
+    `;
+
+    // Show the logout button after receipt is displayed
+    document.getElementById('logoutButton').style.display = 'block';
+});
+
+// Logout function
+function logout() {
+    localStorage.removeItem("userSession"); // Clear session data
+    window.location.href = "logout1.html"; // Redirect to logout page
+}
+
+
+
+</script>
+
+</body>
+</html>

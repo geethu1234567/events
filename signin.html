@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Ticket Booking - Sign In & Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://png.pngtree.com/thumb_back/fh260/background/20220916/pngtree-cinema-ticket-on-dark-background-delivery-theater-vintage-photo-image_3103117.jpg') no-repeat center center/cover;
+            flex-direction: column;
+        }
+        .container {
+            position: relative;
+            width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: none;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        .input-field {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .input-field label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-field input:focus {
+            border-color: #ff7eb3;
+            box-shadow: 0 0 5px rgba(255, 94, 158, 0.5);
+        }
+        .btn {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            color: white;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px;
+            margin-top: 15px;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .success-message {
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-container .btn {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <p class="success-message" id="global-success"></p>
+    <div id="landing-page" class="container" style="display: block;">
+        <h2>Welcome to Event Ticket Booking</h2>
+        <div class="button-container">
+            <button class="btn" onclick="showSignIn()">Admin</button>
+            <button class="btn" onclick="showSignUp()">User</button>
+        </div>
+    </div>
+    
+    <div id="signin-page" class="container">
+        <h2 class="title">Admin</h2>
+        <div class="input-field">
+            <label for="signin-username">Username</label>
+            <input type="text" id="signin-username" required>
+        </div>
+        <div class="input-field">
+            <label for="signin-password">Password</label>
+            <input type="password" id="signin-password" required>
+        </div>
+        <button type="button" class="btn" id="signin-btn">Sign In</button>
+    </div>
+    
+    <div id="signup-page" class="container">
+        <h2 class="title">User</h2>
+        <div class="input-field">
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" required>
+        </div>
+        <div class="input-field">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" required>
+        </div>
+        <div class="input-field">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" required>
+        </div>
+        <button type="button" class="btn" id="signup-btn">Sign In</button>
+    </div>
+    
+    <script>
+        function showSignIn() {
+            document.getElementById("landing-page").style.display = "none";
+            document.getElementById("signup-page").style.display = "none";
+            document.getElementById("signin-page").style.display = "block";
+        }
+        
+        function showSignUp() {
+            document.getElementById("landing-page").style.display = "none";
+            document.getElementById("signin-page").style.display = "none";
+            document.getElementById("signup-page").style.display = "block";
+        }
+        
+        document.getElementById("signin-btn").addEventListener("click", function() {
+            let username = document.getElementById("signin-username").value;
+            if (username) {
+                alert(`Sign in successfully! Welcome, ${username}`);
+                document.getElementById("global-success").innerText = `Sign in successfully! Welcome, ${username}`;
+                document.getElementById("global-success").style.display = "block";
+                window.location.href = "view.html";
+            }
+        });
+        
+        document.getElementById("signup-btn").addEventListener("click", function() {
+            let username = document.getElementById("signup-username").value;
+            if (username) {
+                alert(`Sign up successfully! Welcome, ${username}`);
+                document.getElementById("global-success").innerText = `Sign up successfully! Welcome, ${username}`;
+                document.getElementById("global-success").style.display = "block";
+                window.location.href = "view.html";
+            }
+        });
+    </script>
+</body>
+</html>
